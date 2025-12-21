@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View } from "react-native"
+import { useCustomerList } from "./CustomerList.hook";
 
 export const CustomerListScreen = () => {
+    useCustomerList();
     return (
         <View style={styles.container}>
             <Text>hhjakhj</Text>

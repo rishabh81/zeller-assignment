@@ -15,6 +15,8 @@ import { apolloClient } from './services/GraphQL.Service';
 import { CustomerListScreen } from './screens/CustomerList/CustomerList.screen';
 import { ApolloProvider } from '@apollo/client/react';
 import { enableScreens } from 'react-native-screens';
+import { useEffect } from 'react';
+import { databaseService } from './services/database/DatabaseService';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -31,6 +33,17 @@ function App() {
 }
 
 function AppContent() {
+
+  useEffect(() => {
+    const initializeApp =async () => {
+      try {
+        await databaseService.init();
+      } catch(e) {
+        console.error('db initialization failed', e)
+      }
+    }
+    initializeApp()
+  }, []);
 
   return (
     <ApolloProvider client={apolloClient}>
