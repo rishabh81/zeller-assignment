@@ -2,6 +2,7 @@ export enum UserRole {
     Admin='Admin',
     Manager='Manager',
 }
+export type UserType = 'All'| UserRole;
 export interface ZellerCustomer {
     id: string;
     name: string;
