@@ -2,7 +2,7 @@ import {ApolloClient, InMemoryCache, gql, HttpLink} from '@apollo/client';
 import { ZellerCustomerResponse, FetchCustomersResult } from '../types';
 
 const httpLink = new HttpLink({
-    uri: 'http://192.168.1.16:9002/graphql'
+    uri: 'http://192.168.31.77:9002/graphql'
 });
 
 export const apolloClient = new ApolloClient({
