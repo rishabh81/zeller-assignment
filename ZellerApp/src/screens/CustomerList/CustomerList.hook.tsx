@@ -10,6 +10,7 @@ export const useCustomerList = () => {
     const [searchText, setSearchText] = useState('');
     const [refreshing, setRefreshing] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
+    const [isSearchVisible, setIsSearchVisible] = useState(false);
 
     const tabs: UserType[] = ['All', UserRole.Admin, UserRole.Manager]
 
@@ -81,6 +82,17 @@ export const useCustomerList = () => {
         setCurrentPage(page);
     }, []);
 
+    const toggleSearch = () => {
+        setIsSearchVisible((state) => !state);
+        if(isSearchVisible && searchText) {
+            handleSearch('');
+        }
+    };
+
+    const handleSearchSubmit = () => {
+        setIsSearchVisible(false);
+    }
+
     const onRefersh = useCallback( async() => {
         setRefreshing(true);
         await syncWithData();
@@ -114,5 +126,8 @@ export const useCustomerList = () => {
         refreshing,
         searchText,
         deleteCustomer,
+        toggleSearch,
+        handleSearchSubmit,
+        isSearchVisible
     }
 }

@@ -1,10 +1,13 @@
-import { SectionList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { SectionList, StyleSheet, Text, TouchableOpacity, View, TextInput, RefreshControl } from "react-native"
 import { useCustomerList } from "./CustomerList.hook";
 import { ZellerCustomer } from "../../types";
 import CustomerCard from "./CustomerCard.component";
 import { colors } from "../../theme/colors";
 import { useTabAnimation } from "./tabAnimation.hook";
 import Animated from "react-native-reanimated";
+import PagerView from "react-native-pager-view";
+
+const AnimaterPageView = Animated.createAnimatedComponent(PagerView);
 
 export const CustomerListScreen = () => {
     const {
@@ -13,11 +16,23 @@ export const CustomerListScreen = () => {
         tabs,
         handlePageChange,
         currentPage,
+        isSearchVisible,
+        handleSearch,
+        handleSearchSubmit,
+        searchText,
+        toggleSearch,
+        refreshing,
+        onRefersh,
     } = useCustomerList();
 
-    const {tabIndicatorStyle, updateAnimation} = useTabAnimation();
+    const { tabIndicatorStyle, updateAnimation } = useTabAnimation();
 
-    const renderCustomer = ({item}: {item: ZellerCustomer}) => (
+    const onPageChange = (page: number) => {
+        handlePageChange(page);
+        updateAnimation(page);
+    }
+
+    const renderCustomer = ({ item }: { item: ZellerCustomer }) => (
         <CustomerCard
             customerData={item}
             onDelete={() => { // revisite to remove inline function
@@ -26,42 +41,80 @@ export const CustomerListScreen = () => {
         />
     )
 
-    const renderSectionHeader = ({section}: {section:{title: string}}) => {
+    const renderSectionHeader = ({ section }: { section: { title: string } }) => {
         return (
             <View style={styles.sectionHeader}>
                 <Text style={styles.sectionHeaderText}>{section.title}</Text>
             </View>
         )
     }
+
     return (
         <View style={styles.container}>
-            <View style={{flexDirection: 'row', marginVertical:10}}>
+            {isSearchVisible ? (
+                <View style={styles.searchContainer}>
+                    <View style={styles.searchInputContainer}>
+                        <TextInput
+                            style={styles.searchInput}
+                            placeholder='Search customers'
+                            value={searchText}
+                            onChangeText={handleSearch}
+                            onSubmitEditing={handleSearchSubmit}
+                            autoFocus
+                            returnKeyType='search'
+
+                        />
+                        <TouchableOpacity style={styles.clearButton} onPress={() => {
+                            // onPageChange(0);
+                            toggleSearch();
+                        }}>
+                            <Text style={styles.clearButtonText}>X</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            ) : <View style={{ flexDirection: 'row', marginVertical: 10 }}>
                 <View style={styles.tabsContainer}>
-                    // tabs
+                    
                     {tabs.map((tab, index) => (
                         <TouchableOpacity
                             key={tab}
-                            style={[styles.tab]}
-                            onPress={() =>{
-                                handlePageChange(index);
-                                updateAnimation(index);
+                            style={styles.tab}
+                            onPress={() => {
+                                onPageChange(index)
                             }}
                         >
-                            <Text style={styles.tabText}>{tab}</Text>
+                            <Text style={[styles.tabText, (currentPage === index) && styles.selectedTab]}>{tab}</Text>
                         </TouchableOpacity>
                     ))}
                     <Animated.View style={[styles.tabIndicator, tabIndicatorStyle]} />
                 </View>
-            // search
+            
                 <View style={styles.searchSection}>
-                    <Text>S</Text>
+                    <Text onPress={toggleSearch}>S</Text>
                 </View>
-            </View>
-           <SectionList
-            sections={sectionedCustomer}
-            renderItem={renderCustomer}
-            renderSectionHeader={renderSectionHeader}
-           />
+            </View>}
+            <AnimaterPageView
+            style={{flex: 1}}
+            initialPage={0}
+            onPageSelected={(e) => onPageChange(e.nativeEvent.position)}
+            >
+                {
+                    tabs.map(tab => (
+                        <View key={tab} style={styles.page}>
+                          <SectionList
+                                sections={sectionedCustomer}
+                                renderItem={renderCustomer}
+                                renderSectionHeader={renderSectionHeader}
+                                refreshControl={
+                                    <RefreshControl refreshing={refreshing} onRefresh={onRefersh} />
+                                }
+                            />
+                        </View>
+                    ))
+                }
+            </AnimaterPageView>
+            
+
         </View>
     )
 }
@@ -69,36 +122,62 @@ export const CustomerListScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal:10
+        paddingHorizontal: 10
     },
     sectionHeader: {},
-    sectionHeaderText:{},
-    searchSection:{flex:2},
-    tabsContainer:{
-        flexDirection:'row',
-        flex:8,
-        backgroundColor:'#cecece'
+    sectionHeaderText: {},
+    searchSection: {
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    tab:{
-        borderRadius:20,
-        width:'33.3%'
+    tabsContainer: {
+        flexDirection: 'row',
+        flex: 8,
+        backgroundColor: '#cecece'
+    },
+    tab: {
+        borderRadius: 20,
+        width: '33.3%',
+        paddingVertical:5,
+        paddingHorizontal:10,
     },
     selectedTab: {
-        borderWidth:1,
-        backgroundColor: colors.blueLight,
-        borderColor: colors.blueDark,
+        color: colors.blueDark,
     },
-    tabText:{
-        // padding:10,
+    tabText: {
         alignSelf: 'center'
     },
     tabIndicator: {
-        height:20,
-        width:90,
-        position:'absolute',
-        backgroundColor:'#007aff40',
-        borderWidth:1,
+        height: 30,
+        width: 90,
+        position: 'absolute',
+        backgroundColor: '#007aff40',
+        borderWidth: 1,
         borderColor: colors.blueDark,
-        borderRadius:20,
+        borderRadius: 20,
+    },
+    searchContainer: {
+
+    },
+    searchInputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    searchInput: {
+
+    },
+    clearButton: {
+        position: 'absolute',
+        right: 0,
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    clearButtonText: {
+
+    },
+    page: {
+        height: '100%'
     }
 });
