@@ -1,11 +1,15 @@
 import { SectionList, StyleSheet, Text, TouchableOpacity, View, TextInput, RefreshControl } from "react-native"
 import { useCustomerList } from "./CustomerList.hook";
-import { ZellerCustomer } from "../../types";
+import { RootStackParamList, ZellerCustomer } from "../../types";
 import CustomerCard from "./CustomerCard.component";
 import { colors } from "../../theme/colors";
 import { useTabAnimation } from "./tabAnimation.hook";
 import Animated from "react-native-reanimated";
 import PagerView from "react-native-pager-view";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'CustomerList'>
 
 const AnimaterPageView = Animated.createAnimatedComponent(PagerView);
 
@@ -24,6 +28,8 @@ export const CustomerListScreen = () => {
         refreshing,
         onRefersh,
     } = useCustomerList();
+
+    const navigation = useNavigation<NavigationProp>();
 
     const { tabIndicatorStyle, updateAnimation } = useTabAnimation();
 
@@ -114,7 +120,9 @@ export const CustomerListScreen = () => {
                 }
             </AnimaterPageView>
             
-
+            <TouchableOpacity style={styles.fab} onPress={() => {navigation.navigate('AddCustomer')}}>
+                <Text style={styles.fabText}>+</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -179,5 +187,20 @@ const styles = StyleSheet.create({
     },
     page: {
         height: '100%'
+    },
+    fab:{
+        position:'absolute',
+        right:20,
+        bottom:20,
+        height:60,
+        width:60,
+        borderRadius: 5,
+        backgroundColor: colors.blueDark,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    fabText: {
+        color: '#fff',
+        fontSize: 24
     }
 });

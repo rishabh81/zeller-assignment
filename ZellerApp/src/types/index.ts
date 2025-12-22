@@ -19,3 +19,8 @@ export interface FetchCustomersResult {
     customerListData?: ZellerCustomerResponse;
     customerListError?: Error;
 }
+
+export type RootStackParamList = {
+    CustomerList: undefined;
+    AddCustomer: undefined;
+  };

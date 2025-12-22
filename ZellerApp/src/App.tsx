@@ -17,9 +17,11 @@ import { ApolloProvider } from '@apollo/client/react';
 import { enableScreens } from 'react-native-screens';
 import { useEffect } from 'react';
 import { databaseService } from './services/database/DatabaseService';
+import AddCustomer from './screens/AddCustomer/AddCustomer.screen';
+import { RootStackParamList } from './types';
 enableScreens();
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -55,6 +57,13 @@ function AppContent() {
             options={{
               headerShown: false
             }}
+            />
+            <Stack.Screen 
+              name='AddCustomer'
+              component={AddCustomer}
+              options={{
+                headerShown: false
+              }}
             />
         </Stack.Navigator>
       </NavigationContainer>
