@@ -21,7 +21,8 @@ export interface FetchCustomersResult {
 }
 
 export interface IFormData {
-    name: string;
+    firstname: string;
+    lastname: string;
     email: string;
     role: UserRole;
 }

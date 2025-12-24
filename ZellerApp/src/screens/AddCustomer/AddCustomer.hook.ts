@@ -6,7 +6,8 @@ const useAddCustomer =(onSuccess: () => void) => {
 
     const form =  useForm({
         defaultValues: {
-            name:'',
+            firstname:'',
+            lastname: '',
             email:'',
             role: UserRole.Manager
         }
@@ -25,7 +26,7 @@ const useAddCustomer =(onSuccess: () => void) => {
         try {
             await databaseService.addCustomer({
                 id: Math.random()+'',
-                name: data.name.trim(),
+                name: data.firstname.trim()+' '+data.lastname.trim(),
                 email: data.email.trim(),
                 role: data.role,
             });
@@ -39,18 +40,30 @@ const useAddCustomer =(onSuccess: () => void) => {
     }
 
     const validationRules = {
-        firstName: {
-            required: 'Name is required',
+        firstname: {
+            required: 'firstname is required',
             maxLength: {
-                value: 35,
-                message: 'Name must not exceed 25 characters',
+                value: 25,
+                message: 'lastname must not exceed 25 characters',
             },
             pattern: {
-                values: /^[a-zA-Z]+$/,
+                value: /^[a-zA-Z]+$/,
+                message: 'Name must only contain alphabets'
+            }
+        },
+        lastname: {
+            required: 'Name is required',
+            maxLength: {
+                value: 24,
+                message: 'Name must not exceed 24 characters',
+            },
+            pattern: {
+                value: /^[a-zA-Z]+$/,
                 message: 'Name must only contain alphabets'
             }
         },
         email: {
+            required: 'Email is required',
             pattern: {
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
                 message: 'Please enter a valid email address' 

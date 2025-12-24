@@ -5,7 +5,7 @@
  * @format
  */
 
-import { StatusBar, StyleSheet, useColorScheme } from 'react-native';
+import { StatusBar, StyleSheet, TouchableOpacity, useColorScheme, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
@@ -19,6 +19,7 @@ import { useEffect } from 'react';
 import { databaseService } from './services/database/DatabaseService';
 import AddCustomer from './screens/AddCustomer/AddCustomer.screen';
 import { RootStackParamList } from './types';
+import { colors } from './theme/colors';
 enableScreens();
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -61,9 +62,16 @@ function AppContent() {
             <Stack.Screen 
               name='AddCustomer'
               component={AddCustomer}
-              options={{
-                headerShown: true
-              }}
+              options={({navigation}) => ({
+                headerLeft: () => (
+                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                      <Text style={styles.crossButtonText}>X</Text>
+                  </TouchableOpacity>
+                ),
+                headerTitle:'',
+                headerShadowVisible: false,
+                presentation:'modal'
+              })}
             />
         </Stack.Navigator>
       </NavigationContainer>
@@ -76,6 +84,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  crossButtonText: {
+    color: colors.blueDark,
+    fontSize: 20
+  },
+  crossButton: {
+    padding:20,
+  }
 });
 
 export default App;
