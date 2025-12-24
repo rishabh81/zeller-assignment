@@ -62,7 +62,7 @@ function AppContent() {
               name='AddCustomer'
               component={AddCustomer}
               options={{
-                headerShown: false
+                headerShown: true
               }}
             />
         </Stack.Navigator>

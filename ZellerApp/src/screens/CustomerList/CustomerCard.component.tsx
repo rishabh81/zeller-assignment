@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableHighlight, View } from "react-native"
 import { ZellerCustomer } from "../../types"
-import { capitalizeFirstLetter } from "../../utils/strings"
+import { capitalizeFirstLetter } from "../../utils/stringsUtils"
 import { colors } from "../../theme/colors"
 
 interface ICustomerCard {

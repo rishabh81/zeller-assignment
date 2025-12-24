@@ -20,6 +20,12 @@ export interface FetchCustomersResult {
     customerListError?: Error;
 }
 
+export interface IFormData {
+    name: string;
+    email: string;
+    role: UserRole;
+}
+
 export type RootStackParamList = {
     CustomerList: undefined;
     AddCustomer: undefined;
