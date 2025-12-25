@@ -19,6 +19,7 @@ export const useCustomerList = () => {
     const [refreshing, setRefreshing] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const [isSearchVisible, setIsSearchVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const navigation = useNavigation<NavigationProp>();
 
     const tabs: UserType[] = ['All', UserRole.Admin, UserRole.Manager]
@@ -70,7 +71,9 @@ export const useCustomerList = () => {
     }, [])
 
     const syncWithData = useCallback(async () => {
-        const {customerListData, customerListError} = await fetchCustomers();
+        setIsLoading(true);
+        const {customerListData, customerListError, constomerLoading} = await fetchCustomers();
+        setIsLoading(false);
         if(customerListError) {
             // erorr handling
             Alert.alert('Sync Error', 'Failed to sync whith server')
@@ -158,6 +161,7 @@ export const useCustomerList = () => {
         editCustomer,
         toggleSearch,
         handleSearchSubmit,
-        isSearchVisible
+        isSearchVisible,
+        isLoading,
     }
 }

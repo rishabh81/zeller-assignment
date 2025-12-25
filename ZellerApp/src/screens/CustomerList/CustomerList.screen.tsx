@@ -28,8 +28,8 @@ export const CustomerListScreen = () => {
         toggleSearch,
         refreshing,
         onRefersh,
+        isLoading,
     } = useCustomerList();
-
     const navigation = useNavigation<NavigationProp>();
 
     const { tabIndicatorStyle, updateAnimation } = useTabAnimation();
@@ -60,7 +60,7 @@ export const CustomerListScreen = () => {
     return (
         <View style={styles.container}>
             {isSearchVisible ? (
-                <View style={styles.searchContainer}>
+                <View>
                     <View style={styles.searchInputContainer}>
                         <TextInput
                             style={styles.searchInput}
@@ -79,7 +79,7 @@ export const CustomerListScreen = () => {
                         </TouchableOpacity>
                     </View>
                 </View>
-            ) : <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+            ) : <View style={styles.topBar}>
                 <View style={styles.tabsContainer}>
                     
                     {tabs.map((tab, index) => (
@@ -100,26 +100,31 @@ export const CustomerListScreen = () => {
                     <Text onPress={toggleSearch}>S</Text>
                 </View>
             </View>}
-            <AnimaterPageView
-            style={{flex: 1}}
-            initialPage={0}
-            onPageSelected={(e) => onPageChange(e.nativeEvent.position)}
-            >
-                {
-                    tabs.map(tab => (
-                        <View key={tab} style={styles.page}>
-                          <SectionList
-                                sections={sectionedCustomer}
-                                renderItem={renderCustomer}
-                                renderSectionHeader={renderSectionHeader}
-                                refreshControl={
-                                    <RefreshControl refreshing={refreshing} onRefresh={onRefersh} />
-                                }
-                            />
-                        </View>
-                    ))
-                }
-            </AnimaterPageView>
+            {isLoading ?
+             <Text style={styles.loadingText}>Loading...</Text>
+             :
+             <AnimaterPageView
+             style={styles.pagerStyle}
+             initialPage={0}
+             onPageSelected={(e) => onPageChange(e.nativeEvent.position)}
+             >
+             {
+                 tabs.map(tab => (
+                     <View key={tab} style={styles.page}>
+                       <SectionList
+                             sections={sectionedCustomer}
+                             renderItem={renderCustomer}
+                             renderSectionHeader={renderSectionHeader}
+                             refreshControl={
+                                 <RefreshControl refreshing={refreshing} onRefresh={onRefersh} />
+                             }
+                         />
+                     </View>
+                 ))
+             }
+         </AnimaterPageView>
+             }
+
             
             <TouchableOpacity style={styles.fab} onPress={() => {navigation.navigate('AddCustomer')}}>
                 <Text style={styles.fabText}>+</Text>
@@ -143,7 +148,8 @@ const styles = StyleSheet.create({
     tabsContainer: {
         flexDirection: 'row',
         flex: 8,
-        backgroundColor: '#cecece'
+        backgroundColor: colors.grey,
+        borderRadius: 20,
     },
     tab: {
         borderRadius: 20,
@@ -166,8 +172,8 @@ const styles = StyleSheet.create({
         borderColor: colors.blueDark,
         borderRadius: 20,
     },
-    searchContainer: {
-
+    pagerStyle: {
+        flex:1
     },
     searchInputContainer: {
         flexDirection: 'row',
@@ -186,6 +192,10 @@ const styles = StyleSheet.create({
     clearButtonText: {
 
     },
+    topBar: { 
+        flexDirection: 'row', 
+        marginVertical: 10 
+    },
     page: {
         height: '100%'
     },
@@ -203,5 +213,8 @@ const styles = StyleSheet.create({
     fabText: {
         color: '#fff',
         fontSize: 24
+    },
+    loadingText: {
+        alignSelf: 'center'
     }
 });

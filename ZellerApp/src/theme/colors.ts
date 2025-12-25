@@ -10,6 +10,7 @@ export const colors = {
 
     // grey
     lighGrey: '#f0f0f0',
+    grey: '#cecece',
 
     // disable
     disabled: '#ccc',

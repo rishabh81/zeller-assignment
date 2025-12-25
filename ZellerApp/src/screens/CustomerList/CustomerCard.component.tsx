@@ -13,7 +13,7 @@ const CustomerCard: React.FC<ICustomerCard> = ({customerData, onDelete, onEdit})
     return(
         <View style={styles.container}>
             <View style={styles.content}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={styles.infoContainer}>
                     <View style={styles.avatar}>
                         <Text style={styles.avatarText}>{avatarText}</Text>
                     </View>
@@ -47,6 +47,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    infoContainer: {
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        flex:7
+    },
     avatar:{
         padding:10,
         backgroundColor: colors.blueLight,
@@ -60,6 +65,8 @@ const styles = StyleSheet.create({
     toolbar: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'flex-end',
+        flex:3,
     },
     roleBadge:{},
     roleText:{

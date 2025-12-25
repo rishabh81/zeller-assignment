@@ -18,6 +18,7 @@ export interface ZellerCustomerResponse {
 export interface FetchCustomersResult {
     customerListData?: ZellerCustomerResponse;
     customerListError?: Error;
+    constomerLoading?: boolean
 }
 
 export interface IFormData {
