@@ -27,7 +27,14 @@ export interface IFormData {
     role: UserRole;
 }
 
+export interface IupdateFormData extends IFormData {
+    id: string
+}
+
 export type RootStackParamList = {
     CustomerList: undefined;
     AddCustomer: undefined;
+    EditCustomer: {
+        customer: ZellerCustomer;
+    };
   };

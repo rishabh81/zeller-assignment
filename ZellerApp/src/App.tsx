@@ -20,6 +20,7 @@ import { databaseService } from './services/database/DatabaseService';
 import AddCustomer from './screens/AddCustomer/AddCustomer.screen';
 import { RootStackParamList } from './types';
 import { colors } from './theme/colors';
+import EditCustomer from './screens/EditCustomer/EditCustomer.screen';
 enableScreens();
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -73,6 +74,22 @@ function AppContent() {
                 presentation:'modal'
               })}
             />
+
+            <Stack.Screen 
+              name='EditCustomer'
+              component={EditCustomer}
+              options={({navigation}) => ({
+                headerLeft: () => (
+                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                      <Text style={styles.crossButtonText}>X</Text>
+                  </TouchableOpacity>
+                ),
+                headerTitle:'',
+                headerShadowVisible: false,
+                presentation:'modal'
+              })}
+            />
+            
         </Stack.Navigator>
       </NavigationContainer>
 

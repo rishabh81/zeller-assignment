@@ -4,10 +4,11 @@ import { capitalizeFirstLetter } from "../../utils/stringsUtils"
 import { colors } from "../../theme/colors"
 
 interface ICustomerCard {
-    customerData: ZellerCustomer,
-    onDelete: () => void,
+    customerData: ZellerCustomer;
+    onDelete: () => void;
+    onEdit: () => void;
 }
-const CustomerCard: React.FC<ICustomerCard> = ({customerData, onDelete}) => {
+const CustomerCard: React.FC<ICustomerCard> = ({customerData, onDelete, onEdit}) => {
     const avatarText = capitalizeFirstLetter(customerData.name)
     return(
         <View style={styles.container}>
@@ -17,14 +18,17 @@ const CustomerCard: React.FC<ICustomerCard> = ({customerData, onDelete}) => {
                         <Text style={styles.avatarText}>{avatarText}</Text>
                     </View>
                     <View style={styles.info}>
-                        <Text style={styles.name}>{customerData.name}</Text>
+                        <Text>{customerData.name}</Text>
                     </View>
                 </View>
                 <View style={styles.toolbar}>
-                    <TouchableHighlight>
-                        <Text>D</Text>
+                    {customerData.role === 'Admin'&& <Text style={styles.roleText}>{customerData.role}</Text>}
+                    <TouchableHighlight style={styles.CTAButton} onPress={onDelete}>
+                        <Text style={styles.CTAText}>Del</Text>
                     </TouchableHighlight>
-                    {customerData.role === 'Admin'&& <Text>{customerData.role}</Text>}
+                    <TouchableHighlight style={styles.CTAButton} onPress={onEdit}>
+                        <Text style={styles.CTAText}>Edit</Text>
+                    </TouchableHighlight>
                 </View>
             </View>
 
@@ -35,7 +39,6 @@ const CustomerCard: React.FC<ICustomerCard> = ({customerData, onDelete}) => {
 const styles = StyleSheet.create({
     container: {
         paddingVertical:10,
-        // marginBottom:10,
         borderBottomWidth:1,
         borderBottomColor: '#cecece'
     },
@@ -54,13 +57,22 @@ const styles = StyleSheet.create({
     info:{
         paddingHorizontal:10
     },
-    name:{},
-    email:{},
-    toolbar: {flexDirection: 'row'},
+    toolbar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     roleBadge:{},
-    roleText:{},
-    deleteButton: {},
-    deleteText:{}
+    roleText:{
+        color: colors.disabled
+    },
+    CTAButton: {
+        padding: 10,
+        backgroundColor: colors.blueDark,
+        marginHorizontal:5
+    },
+    CTAText: {
+        color: colors.white,
+    }
 })
 
 export default CustomerCard

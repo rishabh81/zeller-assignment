@@ -17,6 +17,7 @@ export const CustomerListScreen = () => {
     const {
         sectionedCustomer,
         deleteCustomer,
+        editCustomer,
         tabs,
         handlePageChange,
         currentPage,
@@ -44,6 +45,7 @@ export const CustomerListScreen = () => {
             onDelete={() => { // revisite to remove inline function
                 deleteCustomer(item.id);
             }}
+            onEdit={() => editCustomer(item)}
         />
     )
 
@@ -71,7 +73,6 @@ export const CustomerListScreen = () => {
 
                         />
                         <TouchableOpacity style={styles.clearButton} onPress={() => {
-                            // onPageChange(0);
                             toggleSearch();
                         }}>
                             <Text style={styles.clearButtonText}>X</Text>

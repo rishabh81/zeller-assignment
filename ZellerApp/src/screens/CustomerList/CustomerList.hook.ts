@@ -1,8 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { fetchCustomers } from "../../services/GraphQL.Service";
 import { databaseService } from "../../services/database/DatabaseService";
-import { UserRole, UserType, ZellerCustomer } from "../../types";
+import { RootStackParamList, UserRole, UserType, ZellerCustomer } from "../../types";
 import { Alert } from "react-native";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'CustomerList'
+>;
+
 
 export const useCustomerList = () => {
 
@@ -11,6 +19,7 @@ export const useCustomerList = () => {
     const [refreshing, setRefreshing] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const [isSearchVisible, setIsSearchVisible] = useState(false);
+    const navigation = useNavigation<NavigationProp>();
 
     const tabs: UserType[] = ['All', UserRole.Admin, UserRole.Manager]
 
@@ -99,15 +108,28 @@ export const useCustomerList = () => {
         setRefreshing(false);
     }, [syncWithData]);
 
-    const deleteCustomer = useCallback(async (id: string) => {
-        try {
-            await databaseService.delteCustomer(id);
-            await loadCustomers();
-        } catch(e) {
-            console.error('error while deleting customer', e);
-            Alert.alert('Error', 'Failed to delete customer');
-        }
-    }, [loadCustomers]);
+    const deleteCustomer = useCallback( (id: string) => {
+
+        Alert.alert('Are you sure', 'To delete customer', [
+            {text:'Delete', onPress: async () => {
+                try {
+                    await databaseService.delteCustomer(id);
+                    await loadCustomers();
+                } catch(e) {
+                    console.error('error while deleting customer', e);
+                    Alert.alert('Error', 'Failed to delete customer');
+                }
+            }},
+            {
+                text: 'Cancel', onPress:() => null
+            }
+        ]);
+
+    }, [loadCustomers, databaseService]);
+
+    const editCustomer = useCallback((customer: ZellerCustomer) => {
+        navigation.navigate('EditCustomer', {customer});
+    },[])
 
     useEffect(() => {
         const initializeServiceData = async () => {
@@ -115,6 +137,13 @@ export const useCustomerList = () => {
         };
         initializeServiceData();
     }, []);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            loadCustomers();
+        });
+        return unsubscribe
+    }, [loadCustomers, navigation]);
 
     return {
         sectionedCustomer,
@@ -126,6 +155,7 @@ export const useCustomerList = () => {
         refreshing,
         searchText,
         deleteCustomer,
+        editCustomer,
         toggleSearch,
         handleSearchSubmit,
         isSearchVisible

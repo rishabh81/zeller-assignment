@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
-import useAddCustomer from "./AddCustomer.hook";
+import useEditCustomer from "./EditCustomer.hook";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../../theme/colors";
 import { FormTextInput } from "../../components/FormTextInput";
@@ -9,7 +9,7 @@ import { Button } from "../../components/Button";
 import { useRef } from "react";
 
 
-const AddCustomer = () => {
+const EditCustomer = () => {
     const navigation = useNavigation();
     const {
         control,
@@ -17,14 +17,14 @@ const AddCustomer = () => {
         isSubmitting,
         validationRules,
         handleSubmit,
-    } = useAddCustomer(() => navigation.goBack());
+    } = useEditCustomer(() => navigation.goBack());
 
     const lastNameRef = useRef<TextInput>(null);
     const emailRef = useRef<TextInput>(null);
     return <View style={styles.container}>
             <ScrollView style={styles.container}>
                 <View style={styles.form}>
-                    <Text style={styles.formTitle}>New User</Text>
+                    <Text style={styles.formTitle}>Update User</Text>
                     <FormTextInput
                         name='firstname'
                         control={control}
@@ -69,7 +69,7 @@ const AddCustomer = () => {
 
             </ScrollView>
             <Button
-                title='Add Customer'
+                title='Edit Customer'
                 onPress={handleSubmit}
                 loading={isSubmitting}
                 loadingText='Adding...'
@@ -78,7 +78,7 @@ const AddCustomer = () => {
             />
         </View>
 }
-export default AddCustomer;
+export default EditCustomer;
 
 const styles = StyleSheet.create({
     formTitle: {

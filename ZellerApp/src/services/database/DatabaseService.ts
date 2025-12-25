@@ -60,15 +60,28 @@ class DatabaseService {
     }
 
     async addCustomer(customer: ZellerCustomer): Promise<void> {
+        if(!this.db) throw new Error('DB not initialized');
+
+        await this.db.transaction(tx => {
+                const {id, name, email, role} = customer;
+                tx.executeSql('INSERT OR REPLACE INTO customers(id, name, email, role) VALUES(?, ?, ?, ?)',
+                    [id, name, email, role]
+                );
+        });
 
     }
 
     async updateCustomer(customer: ZellerCustomer): Promise<void> {
-
+        if(!this.db) throw new Error('DB not initialized');
+            const { name, email, role, id } = customer
+        await this.db.executeSql('UPDATE customers SET name = ?, email = ?, role = ? WHERE id = ?',
+            [name, email, role, id]
+        )
     }
 
     async delteCustomer(id: string): Promise<void> {
-
+        if(!this.db) throw new Error('DB not initialized');
+        await this.db.executeSql('DELETE FROM customers WHERE id = ?', [id]);
     }
 
     async clearCustomer(): Promise<void> {
