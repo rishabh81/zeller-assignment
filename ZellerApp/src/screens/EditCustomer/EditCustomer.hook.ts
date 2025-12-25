@@ -1,6 +1,6 @@
 import {useForm} from 'react-hook-form';
 import { Alert } from 'react-native';
-import { IFormData, IupdateFormData, UserRole, ZellerCustomer } from '../../types';
+import { IupdateFormData, ZellerCustomer } from '../../types';
 import { databaseService } from '../../services/database/DatabaseService';
 import { RouteProp, useRoute } from '@react-navigation/native';
 const useEditCustomer =(onSuccess: () => void) => {
