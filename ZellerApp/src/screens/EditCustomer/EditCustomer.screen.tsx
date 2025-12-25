@@ -60,6 +60,7 @@ const EditCustomer = () => {
 
                     <FormButtonGroup
                         name='role'
+                        testID='role'
                         control={control}
                         error={errors.role}
                         options={[UserRole.Admin, UserRole.Manager]}

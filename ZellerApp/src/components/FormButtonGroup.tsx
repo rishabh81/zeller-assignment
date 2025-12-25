@@ -7,7 +7,8 @@ interface IFromButtonGroupSelectProps<T> {
     value: T;
     onChangeText: (value: T) => void;
     options?: T[];
-    error?: FieldError,
+    error?: FieldError;
+    testID?: string;
 }
 
 const ButtonGroupSelect = <T extends string>({
