@@ -4,7 +4,7 @@ import { IFormData, UserRole } from '../../types';
 import { databaseService } from '../../services/database/DatabaseService';
 const useAddCustomer =(onSuccess: () => void) => {
 
-    const form =  useForm({
+    const form =  useForm<IFormData>({
         defaultValues: {
             firstname:'',
             lastname: '',
