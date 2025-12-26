@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { fetchCustomers } from "../../services/GraphQL.Service";
 import { databaseService } from "../../services/database/DatabaseService";
-import { RootStackParamList, UserRole, UserType, ZellerCustomer } from "../../types";
+import { RootStackParamList, EUserRole, UserType, IZellerCustomer } from "../../types";
 import { Alert } from "react-native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -14,7 +14,7 @@ type NavigationProp = NativeStackNavigationProp<
 
 export const useCustomerList = () => {
 
-    const [customers, setCustomers] = useState<ZellerCustomer[]>([]);
+    const [customers, setCustomers] = useState<IZellerCustomer[]>([]);
     const [searchText, setSearchText] = useState('');
     const [refreshing, setRefreshing] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
@@ -22,7 +22,7 @@ export const useCustomerList = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigation = useNavigation<NavigationProp>();
 
-    const tabs: UserType[] = ['All', UserRole.Admin, UserRole.Manager]
+    const tabs: UserType[] = ['All', EUserRole.Admin, EUserRole.Manager]
 
     const filteredCustomers = useMemo(() => {
         let filtered = customers;
@@ -49,7 +49,7 @@ export const useCustomerList = () => {
             }
             acc[firstLetter].push(customer);
             return acc;
-        }, {} as Record<string, ZellerCustomer[]>);
+        }, {} as Record<string, IZellerCustomer[]>);
 
         const sectionListData = Object.keys(groupedNames)
         .sort()
@@ -129,7 +129,7 @@ export const useCustomerList = () => {
 
     }, [loadCustomers, databaseService]);
 
-    const editCustomer = useCallback((customer: ZellerCustomer) => {
+    const editCustomer = useCallback((customer: IZellerCustomer) => {
         navigation.navigate('EditCustomer', {customer});
     },[])
 

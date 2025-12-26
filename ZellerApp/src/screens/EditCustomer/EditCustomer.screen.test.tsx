@@ -2,8 +2,12 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import EditCustomer from './EditCustomer.screen';
 import useEditCustomer from './EditCustomer.hook';
-import { useNavigation } from '@react-navigation/native';
+import { IFromTextInputProps } from '../../components/FormTextInput';
+import { TextInputProps } from 'react-native';
 
+interface IFromTextInputPropsTest extends IFromTextInputProps {
+  name: string;
+} 
 
 // Mock React Navigation hooks
 const mockGoBack = jest.fn();
@@ -24,7 +28,7 @@ jest.mock('../../components/FormTextInput', () => {
   const React = require('react');
   const { TextInput } = require('react-native');
   return {
-    FormTextInput: React.forwardRef((props: any, ref) => (
+    FormTextInput: React.forwardRef((props: IFromTextInputPropsTest, ref: TextInputProps) => (
       <TextInput testID={props.name} {...props} ref={ref} />
     )),
   };

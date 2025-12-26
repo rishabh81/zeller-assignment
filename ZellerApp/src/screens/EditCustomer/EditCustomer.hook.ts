@@ -1,10 +1,10 @@
 import {useForm} from 'react-hook-form';
 import { Alert } from 'react-native';
-import { IupdateFormData, ZellerCustomer } from '../../types';
+import { IupdateFormData, IZellerCustomer } from '../../types';
 import { databaseService } from '../../services/database/DatabaseService';
 import { RouteProp, useRoute } from '@react-navigation/native';
 const useEditCustomer =(onSuccess: () => void) => {
-    const {params: {customer: {id, name, email, role}}} = useRoute<RouteProp<{params: {customer:ZellerCustomer}}, 'params'>>()
+    const {params: {customer: {id, name, email, role}}} = useRoute<RouteProp<{params: {customer:IZellerCustomer}}, 'params'>>()
     const splitName = name.split(' ');
     const firstname = splitName[0];
     const lastname = splitName[1];

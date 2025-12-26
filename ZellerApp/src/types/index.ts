@@ -1,22 +1,22 @@
-export enum UserRole {
+export enum EUserRole {
     Admin='Admin',
     Manager='Manager',
 }
-export type UserType = 'All'| UserRole;
-export interface ZellerCustomer {
+export type UserType = 'All'| EUserRole;
+export interface IZellerCustomer {
     id: string;
     name: string;
     email: string;
-    role: UserRole,
+    role: EUserRole,
 }
 
-export interface ZellerCustomerResponse {
-    items: ZellerCustomer[];
+export interface IZellerCustomerResponse {
+    items: IZellerCustomer[];
     nextToken?: string| null
 }
 
-export interface FetchCustomersResult {
-    customerListData?: ZellerCustomerResponse;
+export interface IFetchCustomersResult {
+    customerListData?: IZellerCustomerResponse;
     customerListError?: Error;
     constomerLoading?: boolean
 }
@@ -25,17 +25,17 @@ export interface IFormData {
     firstname: string;
     lastname: string;
     email: string;
-    role: UserRole;
+    role: EUserRole;
 }
 
 export interface IupdateFormData extends IFormData {
     id: string
 }
 
-export type RootStackParamList = {
+export type TRootStackParamList = {
     CustomerList: undefined;
     AddCustomer: undefined;
     EditCustomer: {
-        customer: ZellerCustomer;
+        customer: IZellerCustomer;
     };
   };

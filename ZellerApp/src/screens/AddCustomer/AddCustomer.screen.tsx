@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { colors } from "../../theme/colors";
 import { FormTextInput } from "../../components/FormTextInput";
 import { FormButtonGroup } from "../../components/FormButtonGroup";
-import { UserRole } from "../../types";
+import { EUserRole } from "../../types";
 import { Button } from "../../components/Button";
 import { useRef } from "react";
 
@@ -62,7 +62,7 @@ const AddCustomer = () => {
                         name='role'
                         control={control}
                         error={errors.role}
-                        options={[UserRole.Admin, UserRole.Manager]}
+                        options={[EUserRole.Admin, EUserRole.Manager]}
                         required
                     />
                 </View>

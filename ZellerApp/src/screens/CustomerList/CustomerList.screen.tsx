@@ -1,6 +1,6 @@
 import { SectionList, StyleSheet, Text, TouchableOpacity, View, TextInput, RefreshControl } from "react-native"
 import { useCustomerList } from "./CustomerList.hook";
-import { RootStackParamList, ZellerCustomer } from "../../types";
+import { TRootStackParamList, IZellerCustomer } from "../../types";
 import CustomerCard from "./CustomerCard.component";
 import { colors } from "../../theme/colors";
 import { useTabAnimation } from "./tabAnimation.hook";
@@ -9,7 +9,7 @@ import PagerView from "react-native-pager-view";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'CustomerList'>
+type NavigationProp = NativeStackNavigationProp<TRootStackParamList, 'CustomerList'>
 
 const AnimaterPageView = Animated.createAnimatedComponent(PagerView);
 
@@ -39,7 +39,7 @@ export const CustomerListScreen = () => {
         updateAnimation(page);
     }
 
-    const renderCustomer = ({ item }: { item: ZellerCustomer }) => (
+    const renderCustomer = ({ item }: { item: IZellerCustomer }) => (
         <CustomerCard
             customerData={item}
             onDelete={() => { // revisite to remove inline function

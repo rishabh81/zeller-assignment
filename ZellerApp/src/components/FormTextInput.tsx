@@ -3,7 +3,7 @@ import { colors } from "../theme/colors";
 import { FieldError } from "react-hook-form";
 import { withFormField } from "./withFormField";
 
-interface  IFromTextInputProps extends TextInputProps{
+export interface  IFromTextInputProps extends TextInputProps{
     error?: FieldError,
 }
 

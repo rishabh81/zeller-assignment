@@ -1,5 +1,5 @@
 import SQLite from 'react-native-sqlite-storage';
-import { ZellerCustomer } from '../../types';
+import { IZellerCustomer } from '../../types';
 SQLite.enablePromise(true);
 class DatabaseService {
     private db: SQLite.SQLiteDatabase | null = null;
@@ -33,18 +33,18 @@ class DatabaseService {
         `)
     }
 
-    async getAllCustomers(): Promise<ZellerCustomer[]> {
+    async getAllCustomers(): Promise<IZellerCustomer[]> {
         if(!this.db) throw new Error('DB not initialized');
 
         const [results] = await this.db.executeSql(`SELECT * FROM customers ORDER BY name`);
-        const customers: ZellerCustomer[] = [];
+        const customers: IZellerCustomer[] = [];
         for(let i=0; i < results.rows.length; i++) {
             customers.push(results.rows.item(i));
         }
         return customers
     }
 
-    async insertCustomers(customers: ZellerCustomer[]): Promise<void> {
+    async insertCustomers(customers: IZellerCustomer[]): Promise<void> {
         if(!this.db) throw new Error('DB not initialized');
 
         await this.db.transaction(tx => {
@@ -59,7 +59,7 @@ class DatabaseService {
 
     }
 
-    async addCustomer(customer: ZellerCustomer): Promise<void> {
+    async addCustomer(customer: IZellerCustomer): Promise<void> {
         if(!this.db) throw new Error('DB not initialized');
 
         await this.db.transaction(tx => {
@@ -71,7 +71,7 @@ class DatabaseService {
 
     }
 
-    async updateCustomer(customer: ZellerCustomer): Promise<void> {
+    async updateCustomer(customer: IZellerCustomer): Promise<void> {
         if(!this.db) throw new Error('DB not initialized');
             const { name, email, role, id } = customer
         await this.db.executeSql('UPDATE customers SET name = ?, email = ?, role = ? WHERE id = ?',

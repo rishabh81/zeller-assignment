@@ -2,22 +2,24 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import CustomerCard from './CustomerCard.component';
-import { ZellerCustomer } from '../../types';
+import { EUserRole, IZellerCustomer } from '../../types';
 
 describe('CustomerCard', () => {
   const mockDelete = jest.fn();
   const mockEdit = jest.fn();
 
-  const customer: ZellerCustomer = {
+  const customer: IZellerCustomer = {
     id: '1',
     name: 'Alice',
-    role: 'Admin',
+    email: 'alice@xyz.com',
+    role: EUserRole.Admin,
   };
 
-  const customerNonAdmin: ZellerCustomer = {
+  const customerNonAdmin: IZellerCustomer = {
     id: '2',
     name: 'Bob',
-    role: 'Manager',
+    email:'bob@xyz.com',
+    role: EUserRole.Manager,
   };
 
   it('renders customer name correctly', () => {

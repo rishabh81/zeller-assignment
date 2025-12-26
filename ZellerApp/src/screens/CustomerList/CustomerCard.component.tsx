@@ -1,10 +1,10 @@
 import { StyleSheet, Text, TouchableHighlight, View } from "react-native"
-import { ZellerCustomer } from "../../types"
+import { IZellerCustomer } from "../../types"
 import { capitalizeFirstLetter } from "../../utils/stringsUtils"
 import { colors } from "../../theme/colors"
 
 interface ICustomerCard {
-    customerData: ZellerCustomer;
+    customerData: IZellerCustomer;
     onDelete: () => void;
     onEdit: () => void;
 }

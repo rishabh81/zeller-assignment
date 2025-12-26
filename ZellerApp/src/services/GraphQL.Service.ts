@@ -1,5 +1,5 @@
 import {ApolloClient, InMemoryCache, gql, HttpLink} from '@apollo/client';
-import { ZellerCustomerResponse, FetchCustomersResult } from '../types';
+import { IZellerCustomerResponse, IFetchCustomersResult } from '../types';
 
 const httpLink = new HttpLink({
     uri: 'http://192.168.1.16:9002/graphql',
@@ -33,9 +33,9 @@ const LIST_ZELLER_CUSTOMER = gql`
     }
 `
 
-export const fetchCustomers = async (): Promise<FetchCustomersResult> => {
+export const fetchCustomers = async (): Promise<IFetchCustomersResult> => {
     const {data, error, loading} = await apolloClient.query<{
-        listZellerCustomers: ZellerCustomerResponse
+        listZellerCustomers: IZellerCustomerResponse
     }>({
         query:LIST_ZELLER_CUSTOMER,
         fetchPolicy: 'network-only',

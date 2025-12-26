@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 import { useCustomerList } from './CustomerList.hook';
-import { UserRole, ZellerCustomer } from '../../types';
+import { EUserRole, IZellerCustomer } from '../../types';
 
 /* -------------------------------------------------------------------------- */
 /*                                   MOCKS                                    */
@@ -29,10 +29,10 @@ jest.mock('../../services/database/DatabaseService', () => ({
 jest.spyOn(Alert, 'alert');
 
 
-const customers: ZellerCustomer[] = [
-  { id: '1', name: 'Alice', email: 'a@test.com', role: UserRole.Admin },
-  { id: '2', name: 'Bob', email: 'b@test.com', role: UserRole.Manager },
-  { id: '3', name: 'Aaron', email: 'c@test.com', role: UserRole.Admin },
+const customers: IZellerCustomer[] = [
+  { id: '1', name: 'Alice', email: 'a@test.com', role: EUserRole.Admin },
+  { id: '2', name: 'Bob', email: 'b@test.com', role: EUserRole.Manager },
+  { id: '3', name: 'Aaron', email: 'c@test.com', role: EUserRole.Admin },
 ];
 
 

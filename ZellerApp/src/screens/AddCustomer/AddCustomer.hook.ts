@@ -1,6 +1,6 @@
 import {useForm} from 'react-hook-form';
 import { Alert } from 'react-native';
-import { IFormData, UserRole } from '../../types';
+import { IFormData, EUserRole } from '../../types';
 import { databaseService } from '../../services/database/DatabaseService';
 const useAddCustomer =(onSuccess: () => void) => {
 
@@ -9,7 +9,7 @@ const useAddCustomer =(onSuccess: () => void) => {
             firstname:'',
             lastname: '',
             email:'',
-            role: UserRole.Manager
+            role: EUserRole.Manager
         }
     });
 
