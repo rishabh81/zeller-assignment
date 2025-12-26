@@ -79,7 +79,7 @@ in case runing app on device replace localhost with laptop's IP address
 
 ## Project structure
 
-
+````
 ├── App.tsx
 ├── components  # Reusable UI components
 │   ├── Button.tsx
@@ -116,6 +116,7 @@ in case runing app on device replace localhost with laptop's IP address
 │   └── index.ts
 └── utils # utility functions
     └── stringsUtils.ts
+````
 
 
 ## Key Features implementation
