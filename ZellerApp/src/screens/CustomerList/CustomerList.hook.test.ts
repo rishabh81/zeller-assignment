@@ -69,8 +69,6 @@ describe('useCustomerList', () => {
 
 
 
-  /* ----------------------------- INITIAL LOAD ----------------------------- */
-
   it('initializes and syncs customers on mount', async () => {
     const { result } = renderHook(() => useCustomerList());
 
@@ -82,7 +80,6 @@ describe('useCustomerList', () => {
     expect(result.current.sectionedCustomer.length).toBe(2); // A, B
   });
 
-  /* ----------------------------- FILTERING -------------------------------- */
 
   it('filters customers by role tab', async () => {
     const { result } = renderHook(() => useCustomerList());
@@ -109,8 +106,6 @@ describe('useCustomerList', () => {
     expect(result.current.sectionedCustomer.length).toBe(1);
     expect(result.current.sectionedCustomer[0].data[0].name).toBe('Bob');
   });
-
-  /* ----------------------------- SEARCH UI -------------------------------- */
 
   it('toggles search and clears text when closing', async () => {
     const { result } = renderHook(() => useCustomerList());
@@ -142,7 +137,6 @@ describe('useCustomerList', () => {
     expect(result.current.isSearchVisible).toBe(false);
   });
 
-  /* ------------------------------ REFRESH --------------------------------- */
 
   it('refreshes customers', async () => {
     const { result } = renderHook(() => useCustomerList());
@@ -154,7 +148,6 @@ describe('useCustomerList', () => {
     expect(result.current.refreshing).toBe(false);
   });
 
-  /* ------------------------------ DELETE ---------------------------------- */
 
   it('deletes customer on confirm', async () => {
     const db =
@@ -175,31 +168,6 @@ describe('useCustomerList', () => {
     expect(db.delteCustomer).toHaveBeenCalledWith('1');
   });
 
-  it.skip('handles delete error', async () => {
-    const db =
-      require('../../services/database/DatabaseService').databaseService;
-
-    db.delteCustomer.mockRejectedValueOnce(new Error('fail'));
-
-    (Alert.alert as jest.Mock).mockImplementation(
-      (_title, _msg, buttons) => {
-        buttons[0].onPress();
-      }
-    );
-
-    const { result } = renderHook(() => useCustomerList());
-
-    await act(async () => {
-      result.current.deleteCustomer('1');
-    });
-
-    expect(Alert.alert).toHaveBeenCalledWith(
-      'Error',
-      'Failed to delete customer'
-    );
-  });
-
-  /* ------------------------------- EDIT ----------------------------------- */
 
   it('navigates to EditCustomer screen', async () => {
     const { result } = renderHook(() => useCustomerList());
@@ -213,24 +181,5 @@ describe('useCustomerList', () => {
     });
   });
 
-  /* ------------------------------ SYNC ERROR ------------------------------ */
 
-  it.skip('shows alert when sync fails', async () => {
-    require('../../services/GraphQL.Service').fetchCustomers.mockResolvedValueOnce(
-      {
-        customerListData: null,
-        customerListError: true,
-        constomerLoading: false,
-      }
-    );
-
-    renderHook(() => useCustomerList());
-
-    await act(async () => {});
-
-    expect(Alert.alert).toHaveBeenCalledWith(
-      'Sync Error',
-      'Failed to sync whith server'
-    );
-  });
 });
