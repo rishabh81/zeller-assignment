@@ -8,6 +8,7 @@ import Animated from "react-native-reanimated";
 import PagerView from "react-native-pager-view";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type NavigationProp = NativeStackNavigationProp<TRootStackParamList, 'CustomerList'>
 
@@ -58,7 +59,7 @@ export const CustomerListScreen = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {isSearchVisible ? (
                 <View>
                     <View style={styles.searchInputContainer}>
@@ -129,7 +130,7 @@ export const CustomerListScreen = () => {
             <TouchableOpacity style={styles.fab} onPress={() => {navigation.navigate('AddCustomer')}}>
                 <Text style={styles.fabText}>+</Text>
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     )
 }
 

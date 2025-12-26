@@ -63,6 +63,9 @@ export const useCustomerList = () => {
 
     const loadCustomers = useCallback( async () => {
         try {
+            if(!databaseService.isInitialized()) {
+                await databaseService.init();
+            }
             const localCustomers = await databaseService.getAllCustomers();
             setCustomers(localCustomers); 
         } catch(e) {

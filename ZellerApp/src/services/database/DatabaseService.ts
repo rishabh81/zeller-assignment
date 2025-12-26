@@ -4,6 +4,10 @@ SQLite.enablePromise(true);
 class DatabaseService {
     private db: SQLite.SQLiteDatabase | null = null;
 
+    isInitialized(): boolean {
+        return this.db !== null;
+    }
+
     async init(): Promise<void> {
         try {
             this.db = await SQLite.openDatabase({
