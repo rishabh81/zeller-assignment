@@ -2,7 +2,7 @@ import {ApolloClient, InMemoryCache, gql, HttpLink} from '@apollo/client';
 import { IZellerCustomerResponse, IFetchCustomersResult } from '../types';
 
 const httpLink = new HttpLink({
-    uri: 'http://192.168.1.16:9002/graphql',
+    uri: 'http://192.168.1.16:9002/graphql', // put localhost in case emulator
     fetch: (uri, options) => {
       return fetch(uri, {
         ...options,
