@@ -16,7 +16,7 @@ export interface IZellerCustomerResponse {
 }
 
 export interface IFetchCustomersResult {
-    customerListData?: IZellerCustomerResponse;
+    customerListData: IZellerCustomerResponse | null;
     customerListError?: Error;
     constomerLoading?: boolean
 }

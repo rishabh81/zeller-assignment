@@ -36,15 +36,13 @@ const LIST_ZELLER_CUSTOMER = gql`
 export const fetchCustomers = async (): Promise<IFetchCustomersResult> => {
     const {data, error, loading} = await apolloClient.query<{
         listZellerCustomers: IZellerCustomerResponse
-    }>({
+    } >({
         query:LIST_ZELLER_CUSTOMER,
         fetchPolicy: 'network-only',
-    }).catch(e => {
-        console.log('Apollo error', e);
-      });
+    })
 
     return {
-        customerListData: data.listZellerCustomers,
+        customerListData: data ? data.listZellerCustomers : null,
         customerListError:error,
         constomerLoading: loading
     }

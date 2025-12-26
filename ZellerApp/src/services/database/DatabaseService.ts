@@ -10,12 +10,9 @@ class DatabaseService {
                 name: 'zeller.db',
                 location: 'default'
             });
-            console.log('before creating table')
             await this.createTables();
-            console.log('after creating table')
 
         } catch(e) {
-            console.log('DB initialization failed', e);
             throw e;
         }
     }
@@ -50,7 +47,6 @@ class DatabaseService {
         await this.db.transaction(tx => {
             customers.forEach(customer => {
                 const {id, name, email, role} = customer;
-                console.log(id)
                 tx.executeSql('INSERT OR REPLACE INTO customers(id, name, email, role) VALUES(?, ?, ?, ?)',
                     [id, name, email, role]
                 );
