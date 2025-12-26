@@ -70,7 +70,7 @@ const EditCustomer = () => {
 
             </ScrollView>
             <Button
-                title='Edit Customer'
+                title='Update Customer'
                 onPress={handleSubmit}
                 loading={isSubmitting}
                 loadingText='Adding...'

@@ -149,3 +149,7 @@ Run tests with Coverage
 ````bash
     npm run test ---coverage
 ````
+
+![Add User Screen](Zeller-customer-page.jpeg)  
+![Add User Screen](Zeller-add-customer.jpeg)  
+![Add User Screen](Zeller-update-customer.jpeg)  
