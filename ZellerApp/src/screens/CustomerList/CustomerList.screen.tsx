@@ -96,9 +96,9 @@ export const CustomerListScreen = () => {
                     <Animated.View style={[styles.tabIndicator, tabIndicatorStyle]} />
                 </View>
             
-                <View style={styles.searchSection}>
-                    <Text onPress={toggleSearch}>S</Text>
-                </View>
+                <TouchableOpacity onPress={toggleSearch} style={styles.searchSection}>
+                    <Text>🔍</Text>
+                </TouchableOpacity>
             </View>}
             {isLoading ?
              <Text style={styles.loadingText}>Loading...</Text>

@@ -39,7 +39,6 @@ const useEditCustomer =(onSuccess: () => void) => {
                 {text:'ok', onPress: onSuccess}
             ]);
         } catch(error) {
-            console.error('Failed to add the customer', error);
             Alert.alert('Error', 'Failed to add the customer');
         }
     }
