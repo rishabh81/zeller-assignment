@@ -4,7 +4,6 @@ import EditCustomer from './EditCustomer.screen';
 import useEditCustomer from './EditCustomer.hook';
 import { useNavigation } from '@react-navigation/native';
 
-// -------------------- MOCKS --------------------
 
 // Mock React Navigation hooks
 const mockGoBack = jest.fn();
@@ -49,7 +48,7 @@ jest.mock('../../components/Button', () => {
   };
 });
 
-// -------------------- TESTS --------------------
+
 describe('EditCustomer Screen', () => {
   beforeEach(() => {
     (useEditCustomer as jest.Mock).mockImplementation((onSuccess: () => void) => ({

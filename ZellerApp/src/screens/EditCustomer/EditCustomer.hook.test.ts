@@ -4,7 +4,6 @@ import useEditCustomer from './EditCustomer.hook';
 import { databaseService } from '../../services/database/DatabaseService';
 import { useRoute } from '@react-navigation/native';
 
-/* -------------------- MOCKS -------------------- */
 
 jest.mock('@react-navigation/native', () => ({
   useRoute: jest.fn(),
@@ -18,7 +17,6 @@ jest.mock('../../services/database/DatabaseService', () => ({
 
 jest.spyOn(Alert, 'alert');
 
-/* -------------------- TEST DATA -------------------- */
 
 const mockCustomer = {
   id: '1',
@@ -29,7 +27,6 @@ const mockCustomer = {
 
 const mockOnSuccess = jest.fn();
 
-/* -------------------- TESTS -------------------- */
 
 describe('useEditCustomer', () => {
   beforeEach(() => {

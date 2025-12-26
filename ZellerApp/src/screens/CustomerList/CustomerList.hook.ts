@@ -79,7 +79,6 @@ export const useCustomerList = () => {
             Alert.alert('Sync Error', 'Failed to sync whith server')
         }
         if(customerListData) {
-            console.log('customerListData', customerListData);
             await databaseService.clearCustomer();
             await databaseService.insertCustomers(customerListData.items);
             await loadCustomers();

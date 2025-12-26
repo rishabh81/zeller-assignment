@@ -2,9 +2,6 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import AddCustomer from './AddCustomer.screen';
 
-/* ----------------------------------
-   Navigation mock
------------------------------------ */
 const mockGoBack = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
@@ -13,9 +10,6 @@ jest.mock('@react-navigation/native', () => ({
   }),
 }));
 
-/* ----------------------------------
-   useAddCustomer hook mock
------------------------------------ */
 const mockHandleSubmit = jest.fn();
 
 const mockUseAddCustomer = jest.fn();
@@ -34,9 +28,6 @@ jest.mock('./AddCustomer.hook', () => ({
   },
 }));
 
-/* ----------------------------------
-   Component mocks (NAMED EXPORTS!)
------------------------------------ */
 jest.mock('../../components/FormTextInput', () => {
   const React = require('react');
   return {
@@ -82,9 +73,6 @@ jest.mock('../../components/FormTextInput', () => {
   });
   
 
-/* ----------------------------------
-   Tests
------------------------------------ */
 describe('AddCustomer Screen', () => {
   beforeEach(() => {
     jest.clearAllMocks();

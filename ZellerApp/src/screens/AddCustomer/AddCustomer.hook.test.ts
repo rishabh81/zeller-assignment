@@ -3,8 +3,6 @@ import { Alert } from 'react-native';
 import useAddCustomer from './AddCustomer.hook';
 import { databaseService } from '../../services/database/DatabaseService';
 
-/* -------------------- Mocks -------------------- */
-
 // Mock database service
 jest.mock('../../services/database/DatabaseService', () => ({
   databaseService: {
@@ -34,8 +32,6 @@ jest.mock('react-hook-form', () => ({
 
 jest.spyOn(Alert, 'alert');
 jest.spyOn(console, 'error').mockImplementation(() => {});
-
-/* -------------------- Tests -------------------- */
 
 describe('useAddCustomer', () => {
   const onSuccessMock = jest.fn();
