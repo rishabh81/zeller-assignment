@@ -5,7 +5,7 @@ import { colors } from "../theme/colors";
 
 interface IWithFormFieldProps {
   name: string;
-  control: Control<any>;
+  control: Control<Record<string, any>>;
   rules?: RegisterOptions;
   error?: FieldError;
   label?: string;
@@ -18,7 +18,7 @@ type TWithFormFieldProps<T> =
 export function withFormField<T extends object>(
   WrappedComponent: React.ComponentType<T>
 ) {
-  return forwardRef<any, TWithFormFieldProps<T>>(
+  return forwardRef<React.ComponentRef<React.ComponentType<T>>, TWithFormFieldProps<T>>(
     (props, ref) => {
       const typedProps = props as TWithFormFieldProps<T>;
 
