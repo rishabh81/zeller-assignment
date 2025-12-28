@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { fetchCustomers } from "../../services/GraphQL.Service";
 import { databaseService } from "../../services/database/DatabaseService";
-import { RootStackParamList, EUserRole, UserType, IZellerCustomer } from "../../types";
+import { TRootStackParamList, EUserRole, UserType, IZellerCustomer } from "../../types";
 import { Alert } from "react-native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 type NavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
+  TRootStackParamList,
   'CustomerList'
 >;
 
@@ -63,9 +63,7 @@ export const useCustomerList = () => {
 
     const loadCustomers = useCallback( async () => {
         try {
-            console.log(databaseService.isInitialized())
             if(!databaseService.isInitialized()) {
-                console.log('not init----');
                 await databaseService.init();
             }
             const localCustomers = await databaseService.getAllCustomers();

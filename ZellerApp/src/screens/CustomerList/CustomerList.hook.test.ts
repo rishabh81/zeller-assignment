@@ -24,7 +24,7 @@ jest.mock('../../services/database/DatabaseService', () => ({
     clearCustomer: jest.fn(),
     delteCustomer: jest.fn(),
     isInitialized: jest.fn(() => true),
-    init: jest.fn
+    init: jest.fn(),
   },
 }));
 
@@ -274,7 +274,7 @@ describe('useCustomerList', () => {
 
   it('handles database initialization error', async() => {
     const db = require('../../services/database/DatabaseService').databaseService;
-    db.isInitialized.mockReturnedValueOnce(false);
+    db.isInitialized.mockReturnValueOnce(false);
     db.init.mockRejectedValueOnce(new Error('Init Error'));
 
     renderHook(() => useCustomerList());
@@ -283,7 +283,7 @@ describe('useCustomerList', () => {
       await new Promise<void>((resolve) => setTimeout(resolve,0));
     });
 
-    expect(console.error).toHaveBeenCalledWith('Failed to load customer', expect.any(Error));
+    expect(console.error).toHaveBeenCalledWith('Failed to load customers', expect.any(Error));
   })
 
 

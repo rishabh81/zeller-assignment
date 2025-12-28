@@ -26,12 +26,12 @@ jest.mock('./EditCustomer.hook', () => ({
 // Mock FormTextInput
 jest.mock('../../components/FormTextInput', () => {
   const React = require('react');
-  const { TextInput } = require('react-native');
+  const { TextInput, TextInputSubmitEditingEvent } = require('react-native');
   return {
     FormTextInput: React.forwardRef((props: IFromTextInputPropsTest, ref: TextInputProps) => {
-      const handleSubmitEditing = () => {
+      const handleSubmitEditing = (e: { nativeEvent: {text: string}}) => {
         if(props.onSubmitEditing) {
-          props.onSubmitEditing
+          props.onSubmitEditing(e as any)
         }
       }
      return  <TextInput testID={props.name} {...props} ref={ref} onSubmitEditing={handleSubmitEditing} />
