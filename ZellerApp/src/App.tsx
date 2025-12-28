@@ -18,12 +18,12 @@ import { enableScreens } from 'react-native-screens';
 import { useEffect } from 'react';
 import { databaseService } from './services/database/DatabaseService';
 import AddCustomer from './screens/AddCustomer/AddCustomer.screen';
-import { RootStackParamList } from './types';
+import { TRootStackParamList } from './types';
 import { colors } from './theme/colors';
 import EditCustomer from './screens/EditCustomer/EditCustomer.screen';
 enableScreens();
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<TRootStackParamList>();
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
