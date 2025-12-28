@@ -5,7 +5,7 @@ import { colors } from "../theme/colors";
 
 interface IWithFormFieldProps {
   name: string;
-  control: Control<Record<string, any>>;
+  control: Control<Record<string, unknown>>;
   rules?: RegisterOptions;
   error?: FieldError;
   label?: string;
