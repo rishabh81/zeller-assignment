@@ -82,7 +82,7 @@ describe('EditCustomer Screen', () => {
     expect(getByPlaceholderText('Enter lastname')).toBeTruthy();
     expect(getByPlaceholderText('Enter email address')).toBeTruthy();
     expect(getByTestId('role')).toBeTruthy(); // FormButtonGroup mock
-    expect(getByText('Edit Customer')).toBeTruthy();
+    expect(getByText('Update Customer')).toBeTruthy();
   });
 
 

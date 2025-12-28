@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { CustomerListScreen } from './CustomerList.screen';
+import { useTabAnimation } from './tabAnimation.hook';
 
 // react-native-reanimated mock
 jest.mock('react-native-reanimated', () => ({
@@ -41,7 +42,7 @@ jest.mock('./tabAnimation.hook', () => ({
 }));
 
 // CustomerList hook
-const mockUseCustomerList = jest.fn(() => ({
+const defaultMockData = {
   sectionedCustomer: [{ title: 'A', data: [{ id: '1', name: 'Alice', role: 'Admin' }] }],
   deleteCustomer: jest.fn(),
   editCustomer: jest.fn(),
@@ -56,7 +57,10 @@ const mockUseCustomerList = jest.fn(() => ({
   refreshing: false,
   onRefersh: jest.fn(),
   isLoading: false,
-}));
+};
+
+const mockUseCustomerList = jest.fn(() => defaultMockData)
+const createMockData = (overRides ={}) => ({...defaultMockData, ...overRides})
 jest.mock('./CustomerList.hook', () => ({
   useCustomerList: () => mockUseCustomerList(),
 }));
@@ -64,15 +68,19 @@ jest.mock('./CustomerList.hook', () => ({
 // CustomerCard
 jest.mock('./CustomerCard.component', () => {
   const React = require('react');
-  const { Text, View } = require('react-native');
+  const { Text, View, TouchableOpacity } = require('react-native');
 
   return ({ customerData, onDelete, onEdit }: any) =>
     React.createElement(
       View,
       null,
       React.createElement(Text, { testID: `customer-${customerData.id}` }, customerData.name),
-      React.createElement(Text, { testID: `edit-${customerData.id}`, onPress: onEdit }, 'Edit'),
-      React.createElement(Text, { testID: `delete-${customerData.id}`, onPress: onDelete }, 'Delete')
+      React.createElement(TouchableOpacity, { testID: `edit-${customerData.id}`, onPress: onEdit },
+        React.createElement(Text, null, 'Edit')
+       ),
+      React.createElement(TouchableOpacity, { testID: `delete-${customerData.id}`, onPress: onDelete },
+        React.createElement(Text, null, 'Delete')
+       )
     );
 });
 
@@ -93,23 +101,11 @@ describe('CustomerListScreen', () => {
     // override hook to show search input
     const handleSearch = jest.fn();
     const handleSearchSubmit = jest.fn();
-    mockUseCustomerList.mockReturnValueOnce({
-      sectionedCustomer: [{ title: 'A', data: [{ id: '1', name: 'Alice', role: 'Admin' }] }],
-      deleteCustomer: jest.fn(),
-      editCustomer: jest.fn(),
-      tabs: ['All', 'Admin', 'Manager'],
-      handlePageChange: jest.fn(),
-      currentPage: 0,
-      isSearchVisible: true, // show search input
+    mockUseCustomerList.mockReturnValueOnce(createMockData({
+      isSearchVisible: true,
       handleSearch,
-      handleSearchSubmit,
-      searchText: '',
-      toggleSearch: jest.fn(),
-      refreshing: false,
-      onRefersh: jest.fn(),
-      isLoading: false,
-    });
-
+      handleSearchSubmit
+    }))
     const { getByPlaceholderText } = render(<CustomerListScreen />);
     const input = getByPlaceholderText('Search customers');
 
@@ -121,24 +117,12 @@ describe('CustomerListScreen', () => {
   });
 
   it('clears search on X press', () => {
-    const handleSearch = jest.fn();
     const toggleSearch = jest.fn();
-    mockUseCustomerList.mockReturnValueOnce({
-      sectionedCustomer: [{ title: 'A', data: [{ id: '1', name: 'Alice', role: 'Admin' }] }],
-      deleteCustomer: jest.fn(),
-      editCustomer: jest.fn(),
-      tabs: ['All', 'Admin', 'Manager'],
-      handlePageChange: jest.fn(),
-      currentPage: 0,
+    mockUseCustomerList.mockReturnValueOnce(createMockData({
       isSearchVisible: true,
-      handleSearch,
-      handleSearchSubmit: jest.fn(),
       searchText: 'abc',
-      toggleSearch,
-      refreshing: false,
-      onRefersh: jest.fn(),
-      isLoading: false,
-    });
+      toggleSearch
+    }))
 
     const { getByPlaceholderText, getByText } = render(<CustomerListScreen />);
     const input = getByPlaceholderText('Search customers');
@@ -149,22 +133,11 @@ describe('CustomerListScreen', () => {
   });
 
   it('shows loading indicator', () => {
-    mockUseCustomerList.mockReturnValueOnce({
-      sectionedCustomer: [],
-      deleteCustomer: jest.fn(),
-      editCustomer: jest.fn(),
-      tabs: ['All', 'Admin', 'Manager'],
-      handlePageChange: jest.fn(),
-      currentPage: 0,
-      isSearchVisible: false,
-      handleSearch: jest.fn(),
-      handleSearchSubmit: jest.fn(),
-      searchText: '',
-      toggleSearch: jest.fn(),
-      refreshing: false,
-      onRefersh: jest.fn(),
-      isLoading: true, // show loading
-    });
+
+    mockUseCustomerList.mockReturnValueOnce(createMockData({
+      isLoading: true,
+      sectionedCustomer: []
+    }))
 
     const { getByText } = render(<CustomerListScreen />);
     expect(getByText('Loading...')).toBeTruthy();
@@ -175,4 +148,37 @@ describe('CustomerListScreen', () => {
     fireEvent.press(getByText('+'));
     expect(mockNavigate).toHaveBeenCalledWith('AddCustomer');
   });
+
+  it('calls delete Customer when delete is pressed', () => {
+    const deleteCustomer= jest.fn();
+    mockUseCustomerList.mockReturnValueOnce(createMockData({deleteCustomer}))
+    const {getAllByTestId} = render(<CustomerListScreen/>);
+    fireEvent.press(getAllByTestId('delete-1')[0]);
+    expect(deleteCustomer).toHaveBeenCalledWith('1');
+  });
+
+  it('calls edit Customer when delete is pressed', () => {
+    const editCustomer= jest.fn();
+    mockUseCustomerList.mockReturnValueOnce(createMockData({editCustomer}))
+    const {getAllByTestId} = render(<CustomerListScreen/>);
+    fireEvent.press(getAllByTestId('edit-1')[0]);
+    expect(editCustomer).toHaveBeenCalledWith({id:'1', name: 'Alice', role: 'Admin'});
+  });
+
+  it('toggles search when serch icon is pressed', () => {
+    const toggleSearch= jest.fn();
+    mockUseCustomerList.mockReturnValueOnce(createMockData({toggleSearch}))
+    const {getByText} = render(<CustomerListScreen/>);
+    fireEvent.press(getByText('🔍'));
+    expect(toggleSearch).toHaveBeenCalled();
+  });
+
+  it('handles tab press and page change', () => {
+    const handlePageChange = jest.fn();
+    mockUseCustomerList.mockReturnValueOnce(createMockData({handlePageChange}))
+    const {getByText} = render(<CustomerListScreen/>);
+    fireEvent.press(getByText('Admin'));
+    expect(handlePageChange).toHaveBeenCalledWith(1);
+  });
+
 });

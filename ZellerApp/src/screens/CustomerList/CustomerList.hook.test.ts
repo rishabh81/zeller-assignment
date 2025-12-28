@@ -23,6 +23,8 @@ jest.mock('../../services/database/DatabaseService', () => ({
     insertCustomers: jest.fn(),
     clearCustomer: jest.fn(),
     delteCustomer: jest.fn(),
+    isInitialized: jest.fn(() => true),
+    init: jest.fn
   },
 }));
 
@@ -79,6 +81,7 @@ describe('useCustomerList', () => {
     expect(result.current.isLoading).toBe(false);
     expect(result.current.sectionedCustomer.length).toBe(2); // A, B
   });
+  
 
 
   it('filters customers by role tab', async () => {
