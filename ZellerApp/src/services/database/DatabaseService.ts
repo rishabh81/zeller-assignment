@@ -5,10 +5,12 @@ class DatabaseService {
     private db: SQLite.SQLiteDatabase | null = null;
 
     isInitialized(): boolean {
+        console.log('checkoing isInitialized')
         return this.db !== null;
     }
 
     async init(): Promise<void> {
+        console.log('sdfsd1');
         try {
             this.db = await SQLite.openDatabase({
                 name: 'zeller.db',
@@ -17,6 +19,7 @@ class DatabaseService {
             await this.createTables();
 
         } catch(e) {
+            console.log('sdfsd');
             throw e;
         }
     }

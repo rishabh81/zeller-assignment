@@ -28,9 +28,14 @@ jest.mock('../../components/FormTextInput', () => {
   const React = require('react');
   const { TextInput } = require('react-native');
   return {
-    FormTextInput: React.forwardRef((props: IFromTextInputPropsTest, ref: TextInputProps) => (
-      <TextInput testID={props.name} {...props} ref={ref} />
-    )),
+    FormTextInput: React.forwardRef((props: IFromTextInputPropsTest, ref: TextInputProps) => {
+      const handleSubmitEditing = () => {
+        if(props.onSubmitEditing) {
+          props.onSubmitEditing
+        }
+      }
+     return  <TextInput testID={props.name} {...props} ref={ref} onSubmitEditing={handleSubmitEditing} />
+  }),
   };
 });
 
@@ -96,5 +101,16 @@ describe('EditCustomer Screen', () => {
     const { getByTestId } = render(<EditCustomer />);
     fireEvent.press(getByTestId('button'));
     expect(mockGoBack).toHaveBeenCalled();
+  });
+
+  it('handles onSubmitEditing callbacks', () => {
+    const { getByTestId } = render(<EditCustomer />);
+    const firstNameInput = getByTestId('firstname');
+    const lastNameInput = getByTestId('lastname');
+    const emailInput = getByTestId('email');
+
+    expect(() => fireEvent(firstNameInput, 'submitEditing')).not.toThrow();
+    expect(() => fireEvent(lastNameInput, 'submitEditing')).not.toThrow();
+    expect(() => fireEvent(emailInput, 'submitEditing')).not.toThrow();
   });
 });

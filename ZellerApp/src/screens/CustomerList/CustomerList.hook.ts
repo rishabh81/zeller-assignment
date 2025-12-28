@@ -63,7 +63,9 @@ export const useCustomerList = () => {
 
     const loadCustomers = useCallback( async () => {
         try {
+            console.log(databaseService.isInitialized())
             if(!databaseService.isInitialized()) {
+                console.log('not init----');
                 await databaseService.init();
             }
             const localCustomers = await databaseService.getAllCustomers();
@@ -79,7 +81,7 @@ export const useCustomerList = () => {
         setIsLoading(false);
         if(customerListError) {
             // erorr handling
-            Alert.alert('Sync Error', 'Failed to sync whith server')
+            Alert.alert('Sync Error', 'Failed to sync with server')
         }
         if(customerListData) {
             await databaseService.clearCustomer();
@@ -114,7 +116,6 @@ export const useCustomerList = () => {
     }, [syncWithData]);
 
     const deleteCustomer = useCallback( (id: string) => {
-
         Alert.alert('Are you sure', 'To delete customer', [
             {text:'Delete', onPress: async () => {
                 try {

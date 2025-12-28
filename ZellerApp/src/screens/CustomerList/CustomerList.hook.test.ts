@@ -158,7 +158,7 @@ describe('useCustomerList', () => {
 
     (Alert.alert as jest.Mock).mockImplementation(
       (_title, _msg, buttons) => {
-        buttons[0].onPress();
+        buttons?.[0]?.onPress();
       }
     );
 
@@ -183,6 +183,108 @@ describe('useCustomerList', () => {
       customer: customers[0],
     });
   });
+
+  it('handles loadCustomers error', async () => {
+
+    require('../../services/database/DatabaseService').databaseService.getAllCustomers.mockRejectedValueOnce(
+      new Error('DB Error')
+    )
+
+    renderHook(() => useCustomerList());
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve,0));
+    });
+
+    expect(console.error).toHaveBeenCalledWith('Failed to load customers', expect.any(Error))
+  });
+
+  it('handles sync error', async () => {
+    require('../../services/GraphQL.Service').fetchCustomers.mockResolvedValueOnce({
+      customerListData: null,
+      customerListError: new Error('Network Error'),
+      customerLoading: false,
+    });
+    renderHook(() => useCustomerList());
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve,0));
+    });
+
+    expect(Alert.alert).toHaveBeenCalledWith('Sync Error', 'Failed to sync with server');
+
+  })
+
+  it('clears search text when toggling search off with existing text', async () => {
+    const {result} = renderHook(() => useCustomerList());
+
+    act(() => {
+      result.current.handleSearch('test');
+      result.current.toggleSearch();
+    });
+
+    expect(result.current.isSearchVisible).toBe(true);
+    expect(result.current.searchText).toBe('test');
+
+    act(() => {
+      result.current.toggleSearch();
+    })
+
+    expect(result.current.isSearchVisible).toBe(false);
+    expect(result.current.searchText).toBe('');
+
+  })
+
+  it('handles delete customer error', async () => {
+    const db = require('../../services/database/DatabaseService').databaseService
+    db.delteCustomer.mockRejectedValueOnce(
+      new Error('Delete Error')
+    );
+
+    (Alert.alert as jest.Mock).mockImplementation((_title, _msg, buttons) => {
+      buttons?.[0]?.onPress();
+    });
+
+    const {result} = renderHook(() => useCustomerList());
+
+    await act(async () => {
+      await result.current.deleteCustomer('1');
+    });
+
+    expect(console.error).toHaveBeenCalledWith('error while deleting customer', expect.any(Error));
+    expect(Alert.alert).toHaveBeenCalledWith('Error', 'Failed to delete customer');
+
+  });
+
+  it('handles delete customer cancel', async () => {
+
+    (Alert.alert as jest.Mock).mockImplementation((_title, _msg, buttons) => {
+      buttons?.[1]?.onPress();
+    });
+
+    const {result} = renderHook(() => useCustomerList());
+
+    await act(async () => {
+      await result.current.deleteCustomer('1');
+    });
+
+    expect(Alert.alert).toHaveBeenCalled();
+
+  });
+
+  it('handles database initialization error', async() => {
+    const db = require('../../services/database/DatabaseService').databaseService;
+    db.isInitialized.mockReturnedValueOnce(false);
+    db.init.mockRejectedValueOnce(new Error('Init Error'));
+
+    renderHook(() => useCustomerList());
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve,0));
+    });
+
+    expect(console.error).toHaveBeenCalledWith('Failed to load customer', expect.any(Error));
+  })
 
 
 });
